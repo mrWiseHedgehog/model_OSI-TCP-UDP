@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -17,17 +16,17 @@ public class Client {
             Socket socket = new Socket(InetAddress.getLocalHost(), Server.PORT);
             PrintWriter clientWriter = new PrintWriter(socket.getOutputStream());
             BufferedReader clientReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            try {
+                Scanner clientScanner = new Scanner(System.in);
+                clientWriter.println(clientScanner.nextLine());
+                clientWriter.flush();
 
-            Scanner clientScanner = new Scanner(System.in);
-            clientWriter.println(clientScanner.nextLine());
-            clientWriter.flush();
+                String serverMessage = clientReader.readLine();
+                System.out.println("Server says: " + serverMessage);
 
-            String serverMessage = clientReader.readLine();
-            System.out.println("Server says: " + serverMessage);
-
-        } catch (Exception e) {
-            System.out.println("Can't connecting to server");
-            e.printStackTrace();
+            } catch (Exception e) {
+                System.out.println("Can't connecting to server");
+                e.printStackTrace();
+            }
         }
     }
-}

@@ -1,6 +1,7 @@
 package ru.netology;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -10,7 +11,6 @@ import java.util.Scanner;
 public class Client {
 
     public static void main(String[] args) {
-
 
         try {
             Socket socket = new Socket(InetAddress.getLocalHost(), Server.PORT);
@@ -24,9 +24,12 @@ public class Client {
                 String serverMessage = clientReader.readLine();
                 System.out.println("Server says: " + serverMessage);
 
-            } catch (Exception e) {
-                System.out.println("Can't connecting to server");
-                e.printStackTrace();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+        } catch (Exception e) {
+            System.out.println("Can't connecting to server");
+            e.printStackTrace();
         }
     }
+}

@@ -4,32 +4,30 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
 
-    public static void main(String[] args) {
+    public static final int PORT = 8787;
+    public static final String HOST = "127.0.0.1";
+    private static PrintWriter clientWriter;
+    private static BufferedReader clientReader;
 
-        try {
-            Socket socket = new Socket(InetAddress.getLocalHost(), Server.PORT);
-            PrintWriter clientWriter = new PrintWriter(socket.getOutputStream());
-            BufferedReader clientReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            try {
-                Scanner clientScanner = new Scanner(System.in);
-                clientWriter.println(clientScanner.nextLine());
-                clientWriter.flush();
+    public static void main(String[] args) throws IOException {
 
-                String serverMessage = clientReader.readLine();
-                System.out.println("Server says: " + serverMessage);
+        try (Socket socket = new Socket(HOST, PORT);
+             PrintWriter clientWriter = new PrintWriter(socket.getOutputStream(), true);
+             BufferedReader clientReader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+             Scanner clientScanner = new Scanner(System.in);
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (Exception e) {
-            System.out.println("Can't connecting to server");
-            e.printStackTrace();
+            clientWriter.println(clientScanner.nextLine());
+            clientWriter.flush();
+
+            String serverMessage = clientReader.readLine();
+            System.out.println("Server says: " + serverMessage);
+
+
         }
     }
 }

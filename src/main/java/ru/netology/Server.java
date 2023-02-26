@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+
 import static java.lang.System.out;
 
 public class Server {
@@ -30,7 +31,6 @@ public class Server {
                     writer.println(scanner.nextLine());
                     String clientMessage = reader.readLine(); //TODO In this line can be added saving to a file
                     out.println("Client " + clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " message: " + clientMessage);
-
                 }
             }
         }
